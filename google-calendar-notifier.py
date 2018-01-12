@@ -10,9 +10,13 @@ Google Calendar から直近の予定を取得し、通知時刻になったら�
 import argparse
 import datetime
 import os
+import sys
 
 import modules.Reminder
 import modules.ReReminder
+import modules.RemindWindow
+
+from PyQt5.QtWidgets import (QApplication, QWidget)
 
 import httplib2
 
@@ -23,11 +27,38 @@ from oauth2client.file import Storage
 
 flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 
+SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+CLIENT_SECRET_FILE = 'client_secret.json'
+APPLICATION_NAME = 'Google Calendar notifier'
+
+def get_credentials():
+	"""
+	Gets valid user credentials from storage.
+	"""
+	home_dir = os.path.expanduser('~')
+	credential_dir = os.path.join(home_dir, '.credentials')
+	if not os.path.exists(credential_dir):
+		os.makedirs(credential_dir)
+	credential_path = os.path.join(credential_dir, 'calendar-python-quickstart.json')
+
+	store = Storage(credential_path)
+	credentials = store.get()
+	if not credentials or credentials.invalid:
+		flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
+		flow.user_agent = APPLICATION_NAME
+		if flags:
+			credentials = tools.run_flow(flow, store, flags)
+		print('Storing credentials to ' + credential_path)
+	return credentials
+
 def main():
 	"""
 	main function
 	"""
-	print('hello')
+	app = QApplication(sys.argv)
+	w = QWidget()
+	w.show()
+	sys.exit(app.exec_())
 
 if __name__ == '__main__':
     main()

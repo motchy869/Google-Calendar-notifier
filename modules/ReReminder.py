@@ -2,6 +2,8 @@
 再通知リマインダクラス
 """
 
+import threading
+
 class ReReminder:
 	"""
 	再通知リマインダクラス
