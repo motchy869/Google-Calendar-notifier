@@ -9,6 +9,7 @@ Google Calendar から直近の予定を取得し、通知時刻になったら�
 
 import argparse
 import datetime
+import logging
 import os
 import sys
 
@@ -24,6 +25,12 @@ from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
+
+#logging の設定
+logger = logging.getLogger(__name__); logger.setLevel(logging.DEBUG)
+streamHandler = logging.StreamHandler(); streamHandler.setLevel(logging.DEBUG)
+streamHandler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(threadName)s - %(levelname)s: %(message)s'))
+logger.addHandler(streamHandler)
 
 flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 
@@ -46,8 +53,7 @@ def get_credentials():
 	if not credentials or credentials.invalid:
 		flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
 		flow.user_agent = APPLICATION_NAME
-		if flags:
-			credentials = tools.run_flow(flow, store, flags)
+		credentials = tools.run_flow(flow, store, flags)
 		print('Storing credentials to ' + credential_path)
 	return credentials
 
