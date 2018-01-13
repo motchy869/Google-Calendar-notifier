@@ -23,7 +23,13 @@ def main():
 	app = QApplication(sys.argv)
 	w = QWidget()
 	w.show()
+
+	#マネージャを起動
 	manager = Manager()
+	manager.setDaemon(True)
+	manager.setName('Manager')
+	manager.start()
+
 	sys.exit(app.exec_())
 	"""
 	try:

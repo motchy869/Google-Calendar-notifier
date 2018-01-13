@@ -1,11 +1,13 @@
 """
 マネージャクラス
 """
+
 import argparse
 import datetime
 import os
 import sys
-from time import sleep
+import threading
+import time
 
 from modules.Global import (logger, APPLICATION_NAME)
 from modules.Notif import Notif
@@ -20,19 +22,32 @@ from oauth2client.file import Storage
 
 flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 
-class Manager:
+class Manager(threading.Thread):
 	"""
 	マネージャクラス
 	"""
 
 	def __init__(self):
+		super(Manager, self).__init__()
 		self.SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 		self.CLIENT_SECRET_FILE = 'client_secret.json'
+		self.credentials = None
+		self.service = None
 		self.notifs = []	#Notif インスタンスのリスト
 
-		#認証情報を取得
+	def run(self):
+		logger.debug("Manager started.")
+
+		#認証情報, APIサービスを取得
 		self.wait_server_connection()
 		self.credentials = self.get_credentials()
+		http = self.credentials.authorize(httplib2.Http())
+		self.service = discovery.build('calendar', 'v3', http=http)
+
+		#10分おきに通知を更新
+		while True:
+			self.update_notifs()
+			time.sleep(600)
 
 	def get_credentials(self):
 		"""
@@ -62,7 +77,7 @@ class Manager:
 	@staticmethod
 	def wait_server_connection():
 		"""
-		http://accounts.google.com に接続できるようになるまで待機する
+		http://accounts.google.com に接続できるまで待機する
 		"""
 		while True:
 			try:
@@ -70,11 +85,12 @@ class Manager:
 				if resp.status_code == 200:
 					break
 			except Exception:
-				logger.debug("Waiting server connection.")
-				sleep(5)
+				logger.debug("Waiting server connection. Retrying in 5 seconds.")
+				time.sleep(5)
 
 	def update_notifs(self):
 		"""
 		サーバーより通知を更新する
 		"""
-		pass
+		logger.debug("update_notifs")
+		self.wait_server_connection()

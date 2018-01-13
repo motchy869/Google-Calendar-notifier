@@ -1,3 +1,26 @@
-2018-01-13 21:36:06,343 - modules.Global - Thread-1 - DEBUG: hoge
-2018-01-13 22:29:34,286 - modules.Global - MainThread - DEBUG: Waiting server connection.
-2018-01-13 22:29:39,295 - modules.Global - MainThread - DEBUG: Waiting server connection.
+2018-01-14 01:24:04,277 - modules.Global - statrup@Manager - DEBUG: startup
+2018-01-14 01:24:05,255 - modules.Global - notif-updater@Manager - DEBUG: update_notifs
+2018-01-14 01:35:31,560 - modules.Global - MainThread - DEBUG: Manager started.
+2018-01-14 01:35:32,291 - modules.Global - notif-updater@Manager - DEBUG: update_notifs
+2018-01-14 01:35:35,895 - modules.Global - notif-updater@Manager - DEBUG: update_notifs
+2018-01-14 01:35:39,694 - modules.Global - notif-updater@Manager - DEBUG: update_notifs
+2018-01-14 01:35:43,515 - modules.Global - notif-updater@Manager - DEBUG: update_notifs
+2018-01-14 01:36:09,495 - modules.Global - MainThread - DEBUG: Manager started.
+2018-01-14 01:36:14,726 - modules.Global - notif-updater@Manager - DEBUG: update_notifs
+2018-01-14 01:38:40,300 - modules.Global - MainThread - DEBUG: Manager started.
+2018-01-14 01:38:41,262 - modules.Global - notif-updater@Manager - DEBUG: update_notifs
+2018-01-14 01:39:31,997 - modules.Global - MainThread - DEBUG: Manager started.
+2018-01-14 01:39:33,033 - modules.Global - notif-updater@Manager - DEBUG: update_notifs
+2018-01-14 01:44:14,798 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 01:44:15,586 - modules.Global - notif-updater@Manager - DEBUG: update_notifs
+2018-01-14 01:44:19,118 - modules.Global - notif-updater@Manager - DEBUG: update_notifs
+2018-01-14 01:44:33,762 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 01:44:39,531 - modules.Global - notif-updater@Manager - DEBUG: update_notifs
+2018-01-14 01:46:53,659 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 01:46:54,749 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 01:47:54,936 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 01:47:56,037 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 01:48:42,046 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 01:48:42,779 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 01:50:20,428 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 01:50:21,410 - modules.Global - Manager - DEBUG: update_notifs
