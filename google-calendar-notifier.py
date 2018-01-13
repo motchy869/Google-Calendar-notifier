@@ -6,10 +6,12 @@ Google-Calendar-notifier
 
 Google Calendar から直近の予定を取得し、通知時刻になったらデスクトップに通知を表示する。
 """
-
-import modules.Core
-
 import sys
+
+from modules.Global import APPLICATION_NAME
+from modules.Manager import Manager
+
+import setproctitle
 
 from PyQt5.QtWidgets import (QApplication, QWidget)
 
@@ -17,11 +19,12 @@ def main():
 	"""
 	main function
 	"""
+	setproctitle.setproctitle(APPLICATION_NAME)
 	app = QApplication(sys.argv)
 	w = QWidget()
 	w.show()
+	manager = Manager()
 	sys.exit(app.exec_())
-
 	"""
 	try:
 		credentials = get_credentials()

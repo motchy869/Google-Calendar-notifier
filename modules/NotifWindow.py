@@ -2,7 +2,7 @@
 通知ウィンドウクラス
 """
 
-class NotifyWindow:
+class NotifWindow:
 	"""
 	通知ウィンドウクラス
 	"""

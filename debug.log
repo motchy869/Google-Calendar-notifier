@@ -1,0 +1,3 @@
+2018-01-13 21:36:06,343 - modules.Global - Thread-1 - DEBUG: hoge
+2018-01-13 22:29:34,286 - modules.Global - MainThread - DEBUG: Waiting server connection.
+2018-01-13 22:29:39,295 - modules.Global - MainThread - DEBUG: Waiting server connection.
