@@ -9,14 +9,14 @@ logger = logging.getLogger(__name__); logger.setLevel(logging.DEBUG)	#output DEB
 fmt = logging.Formatter('%(asctime)s - %(name)s - %(threadName)s - %(levelname)s: %(message)s')
 log_sh = logging.StreamHandler();\
 	log_sh.setLevel(logging.DEBUG);\
-	log_sh.setFormatter(fmt);\
-log_fh = logging.FileHandler('debug.log');\
-	log_fh.setLevel(logging.DEBUG);\
-	log_fh.setFormatter(fmt)
-log_efh = logging.FileHandler('error.log');\
-	log_efh.setLevel(logging.ERROR);\
-	log_efh.setFormatter(fmt)
-logger.addHandler(log_sh); logger.addHandler(log_fh); logger.addHandler(log_efh)
+	log_sh.setFormatter(fmt)
+#log_fh = logging.FileHandler('debug.log');\
+#	log_fh.setLevel(logging.DEBUG);\
+#	log_fh.setFormatter(fmt)
+#log_efh = logging.FileHandler('error.log');\
+#	log_efh.setLevel(logging.ERROR);\
+#	log_efh.setFormatter(fmt)
+logger.addHandler(log_sh)#; logger.addHandler(log_fh); logger.addHandler(log_efh)
 
 APPLICATION_NAME = 'Google-Calendar-notifier'
 

@@ -105,7 +105,7 @@ class Manager(threading.Thread):
 		except Exception:
 			return
 
-		#各カレンダーから直近最大3個のイベントを取得
+		#各カレンダーから直近最大3個の通知を取得
 		notifs_latest = []	#[('summary', notif_time_jst), ...]
 		now_jst = datetime.now(timezone('Asia/Tokyo'))
 		for calendar in calendars:
@@ -121,13 +121,14 @@ class Manager(threading.Thread):
 			for event in events:
 				start_time_jst = parser.parse(event['start'].get('dateTime')).astimezone(timezone('Asia/Tokyo'))
 				if event['reminders']['useDefault'] is True:
-					pass
+					rems = calendar['defaultReminders']
 				else:
-					for i in range(len(event['reminders']['overrides'])):
-						notif_time_jst = start_time_jst - timedelta(minutes=event['reminders']['overrides'][i]['minutes'])
-						if (notif_time_jst - now_jst)/timedelta(minutes=1) > 11:
-							continue	#通知が今から11分超過後のものは除外(次の更新で取り入れられるから。1分は安全マージン。)
-						notifs_latest.append((event['summary'], notif_time_jst))
+					rems = event['reminders']['overrides']
+				for rem in rems:
+					notif_time_jst = start_time_jst - timedelta(minutes=rem['minutes'])
+					if (notif_time_jst - now_jst)/timedelta(minutes=1) > 11:
+						continue
+					notifs_latest.append((event['summary'], notif_time_jst))
 
 		#noitfs を更新
 		for notif in self.notifs:	#発動していない通知を除去
