@@ -24,3 +24,70 @@
 2018-01-14 01:48:42,779 - modules.Global - Manager - DEBUG: update_notifs
 2018-01-14 01:50:20,428 - modules.Global - Manager - DEBUG: Manager started.
 2018-01-14 01:50:21,410 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 23:02:08,786 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 23:02:09,416 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 23:02:10,426 - modules.Global - Manager - DEBUG: [{'kind': 'calendar#calendarListEntry', 'etag': '"1479051078729000"', 'id': 'motchy869@gmail.com', 'summary': 'motchy869@gmail.com', 'timeZone': 'Asia/Tokyo', 'colorId': '2', 'backgroundColor': '#d06b64', 'foregroundColor': '#000000', 'selected': True, 'accessRole': 'owner', 'defaultReminders': [{'method': 'popup', 'minutes': 30}], 'notificationSettings': {'notifications': [{'type': 'eventCreation', 'method': 'email'}, {'type': 'eventChange', 'method': 'email'}, {'type': 'eventCancellation', 'method': 'email'}, {'type': 'eventResponse', 'method': 'email'}]}, 'primary': True, 'conferenceProperties': {'allowedConferenceSolutionTypes': ['eventHangout']}}, {'kind': 'calendar#calendarListEntry', 'etag': '"1512564162571000"', 'id': '#contacts@group.v.calendar.google.com', 'summary': 'Contacts', 'timeZone': 'Asia/Tokyo', 'colorId': '17', 'backgroundColor': '#9a9cff', 'foregroundColor': '#000000', 'selected': True, 'accessRole': 'reader', 'defaultReminders': [], 'conferenceProperties': {'allowedConferenceSolutionTypes': ['eventHangout']}}, {'kind': 'calendar#calendarListEntry', 'etag': '"1515808962512000"', 'id': 'ja.japanese#holiday@group.v.calendar.google.com', 'summary': '日本の祝日', 'timeZone': 'Asia/Tokyo', 'summaryOverride': '日本の祝日', 'colorId': '7', 'backgroundColor': '#42d692', 'foregroundColor': '#000000', 'selected': True, 'accessRole': 'reader', 'defaultReminders': [], 'conferenceProperties': {'allowedConferenceSolutionTypes': ['eventHangout']}}]
+2018-01-14 23:19:23,347 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 23:19:24,282 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 23:28:38,889 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 23:28:39,596 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 23:34:44,212 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 23:34:44,951 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 23:35:55,621 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 23:35:56,426 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 23:41:18,093 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 23:41:19,170 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 23:41:59,170 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 23:42:00,105 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 23:42:13,993 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 23:42:15,177 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 23:47:24,542 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 23:47:25,674 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-14 23:47:55,208 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-14 23:47:56,137 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:03:24,168 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:03:24,961 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:08:28,814 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:08:29,482 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:09:44,308 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:09:44,905 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:10:11,481 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:10:12,166 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:10:30,040 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:10:30,637 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:15:20,795 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:15:21,684 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:22:20,812 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:22:21,529 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:26:10,928 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:26:11,710 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:26:41,119 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:26:41,774 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:27:33,137 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:27:33,843 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:27:59,677 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:28:00,355 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:29:30,032 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:29:30,763 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:29:57,362 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:29:58,008 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:31:00,675 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:31:01,292 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:32:20,745 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:32:21,430 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:32:41,789 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:32:42,383 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:33:15,453 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:33:16,175 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:34:00,570 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:34:01,243 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:34:13,454 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:34:14,033 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:35:45,846 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:35:46,491 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:37:12,605 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:37:13,309 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:44:02,670 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:44:03,324 - modules.Global - Manager - DEBUG: update_notifs
+2018-01-15 00:44:30,216 - modules.Global - Manager - DEBUG: Manager started.
+2018-01-15 00:44:30,938 - modules.Global - Manager - DEBUG: update_notifs

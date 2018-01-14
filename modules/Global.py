@@ -19,3 +19,16 @@ log_efh = logging.FileHandler('error.log');\
 logger.addHandler(log_sh); logger.addHandler(log_fh); logger.addHandler(log_efh)
 
 APPLICATION_NAME = 'Google-Calendar-notifier'
+
+def add_item_to_list(array, item):
+	"""
+	Add an item to a list.
+	If there is an empty entry in the list, will place the item at there.
+	Otherwise, append the item at the end of the list.
+	"""
+	assert isinstance(array, list)
+	for i in array:
+		if i is None:
+			array[i] = item
+			return
+	list.append(item)
