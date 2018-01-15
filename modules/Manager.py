@@ -126,8 +126,8 @@ class Manager(threading.Thread):
 					rems = event['reminders']['overrides']
 				for rem in rems:
 					notif_time_jst = start_time_jst - timedelta(minutes=rem['minutes'])
-					if (notif_time_jst - now_jst)/timedelta(minutes=1) > 11:
-						continue
+					if (notif_time_jst - now_jst)/timedelta(minutes=1) <= 0 or (notif_time_jst - now_jst)/timedelta(minutes=1) > 11:
+						continue	#通知時刻を過ぎたものや、11分超過後のものは除外(次の更新で取り入れられる。1分は安全マージン)。
 					notifs_latest.append((event['summary'], notif_time_jst))
 
 		#noitfs を更新

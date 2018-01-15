@@ -31,22 +31,6 @@ def main():
 	manager.start()
 
 	sys.exit(app.exec_())
-	"""
-	try:
-		credentials = get_credentials()
-	except Exception as e:
-		#print(e)
-		pass
-
-	try:
-		http = credentials.authorize(httplib2.Http())
-		service = discovery.build('calendar', 'v3', http=http)
-	except Exception as e:
-		#print(e)
-		pass
-
-	print("hoge")
-	"""
 
 if __name__ == '__main__':
     main()
