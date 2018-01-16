@@ -5,8 +5,6 @@
 import argparse
 from datetime import (datetime, timedelta)
 import os
-import sys
-import threading
 import time
 
 from modules.Global import (logger, APPLICATION_NAME)
@@ -22,101 +20,92 @@ from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
 
+from PyQt5.QtCore import (pyqtSignal, pyqtSlot, QObject, QThread, QTimer)
+
+credentials = None
+service = None
+
 flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 
-class Manager(threading.Thread):
-	"""
-	マネージャクラス
-	"""
+def wait_server_connection():
+	""" http://accounts.google.com に接続できるまで待機する """
+	while True:
+		try:
+			resp = requests.get("http://accounts.google.com")
+			if resp.status_code == 200:
+				break
+		except Exception:
+			logger.debug("Waiting server connection. Retrying in 5 seconds.")
+			time.sleep(5)
 
+class Thread_startup(QThread):
+	""" 認証情報の取得, APIサービスオブジェクトの構築 """
 	def __init__(self):
-		super(Manager, self).__init__()
+		super(Thread_startup, self).__init__()
 		self.SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 		self.CLIENT_SECRET_FILE = 'client_secret.json'
-		self.credentials = None
-		self.service = None
-		self.notifs = []	#Notif インスタンスのリスト
 
 	def run(self):
-		logger.debug("Manager started.")
-
-		#認証情報, APIサービスを取得
-		self.wait_server_connection()
-		self.credentials = self.get_credentials()
-		http = self.credentials.authorize(httplib2.Http())
-		self.service = discovery.build('calendar', 'v3', http=http)
-
-		#10分おきに通知を更新
-		while True:
-			self.update_notifs()
-			time.sleep(600)
-
-	def get_credentials(self):
-		"""
-		Gets valid user credentials from storage.
-
-		If nothing has been stored, or if the stored credentials are invalid,
-		the OAuth2 flow is completed to obtain the new credentials.
-
-		Returns:
-			Credentials, the obtained credential.
-		"""
+		""" run """
+		logger.debug('Getting credentials.')
 		home_dir = os.path.expanduser('~')
 		credential_dir = os.path.join(home_dir, '.credentials')
 		if not os.path.exists(credential_dir):
 			os.makedirs(credential_dir)
 		credential_path = os.path.join(credential_dir, 'Google-Calendar-notifier.json')
 
+		wait_server_connection()
+
 		store = Storage(credential_path)
+		global credentials
 		credentials = store.get()
 		if not credentials or credentials.invalid:
 			flow = client.flow_from_clientsecrets(self.CLIENT_SECRET_FILE, self.SCOPES)
 			flow.user_agent = APPLICATION_NAME
 			credentials = tools.run_flow(flow, store, flags)
 			print('Storing credentials to ' + credential_path)
-		return credentials
 
-	@staticmethod
-	def wait_server_connection():
-		"""
-		http://accounts.google.com に接続できるまで待機する
-		"""
-		while True:
-			try:
-				resp = requests.get("http://accounts.google.com")
-				if resp.status_code == 200:
-					break
-			except Exception:
-				logger.debug("Waiting server connection. Retrying in 5 seconds.")
-				time.sleep(5)
+		logger.debug('Getting service.')
+		http = credentials.authorize(httplib2.Http())
+		global service
+		service = discovery.build('calendar', 'v3', http=http)
 
-	def update_notifs(self):
-		"""
-		サーバーより通知を更新する
-		"""
-		logger.debug("update_notifs")
-		self.wait_server_connection()
+class Thread_fetch_notif_updates(QThread):
+	""" サーバーより通知を更新 """
+	sig_fetch_done = pyqtSignal(bool, list)
+	#1st arg: True,False=succeed,fail
+	#2nd arg: [{'summary': 'summary', 'notif_time': notif_time_jst}, ...]
+
+	def __init__(self):	#pylint: disable=W0235
+		super(Thread_fetch_notif_updates, self).__init__()
+
+	def run(self):
+		""" run """
+		logger.debug('Fetching latest notifs.')
+		wait_server_connection()
 
 		#カレンダーリストを取得(「Contacts, 日本の祝日」を除く最大3)
 		try:
-			calendars = self.service.calendarList().list(#pylint: disable=E1101
+			calendars = service.calendarList().list(	#pylint: disable=E1101
 				maxResults=3+2, minAccessRole='reader', showHidden='true'
 			).execute().get('items', [])
 		except Exception:
+			self.sig_fetch_done.emit(False, [])
 			return
 
 		#各カレンダーから直近最大3個の通知を取得
-		notifs_latest = []	#[('summary', notif_time_jst), ...]
+		notifs_latest = []	#[{'summary': summary', 'notif_time': notif_time_jst}, ...]
 		now_jst = datetime.now(timezone('Asia/Tokyo'))
 		for calendar in calendars:
 			if calendar['summary'] == '日本の祝日' or calendar['summary'] == 'Contacts':
 				continue
 			try:
-				events = self.service.events().list(#pylint: disable=E1101
+				events = service.events().list(#pylint: disable=E1101
 					calendarId=calendar['id'], timeMin=now_jst.isoformat(),
 					maxResults=3, singleEvents=True, orderBy='startTime', showHiddenInvitations=True
 				).execute().get('items', [])
 			except Exception:
+				self.sig_fetch_done.emit(False, [])
 				return
 			for event in events:
 				start_time_jst = parser.parse(event['start'].get('dateTime')).astimezone(timezone('Asia/Tokyo'))
@@ -128,10 +117,44 @@ class Manager(threading.Thread):
 					notif_time_jst = start_time_jst - timedelta(minutes=rem['minutes'])
 					if (notif_time_jst - now_jst)/timedelta(minutes=1) <= 0 or (notif_time_jst - now_jst)/timedelta(minutes=1) > 11:
 						continue	#通知時刻を過ぎたものや、11分超過後のものは除外(次の更新で取り入れられる。1分は安全マージン)。
-					notifs_latest.append((event['summary'], notif_time_jst))
+					notifs_latest.append({'summary': event['summary'], 'notif_time': notif_time_jst})
+		self.sig_fetch_done.emit(True, notifs_latest)
 
-		#noitfs を更新
-		for notif in self.notifs:	#発動していない通知を除去
-			pass
-		for notif_new in notifs_latest:	#新しい通知を追加
-			pass
+class Manager(QObject):
+	""" マネージャクラス """
+
+	def __init__(self):
+		super(Manager, self).__init__()
+		self.notifs = []	#Notif インスタンスのリスト
+
+		#認証情報の取得, APIサービスの構築
+		self.th = Thread_startup()
+		self.th.finished.connect(self.fetch_notif_updates)	#最初の更新
+		self.th.start()
+
+	@pyqtSlot()
+	def fetch_notif_updates(self):
+		""" サーバより最新の通知を取得 """
+		self.th = Thread_fetch_notif_updates()
+		self.th.sig_fetch_done.connect(self.update_notifs)
+		self.th.start()
+
+	@pyqtSlot(bool, list)
+	def update_notifs(self, isSucceeded: bool, notifs_latest: list):
+		""" 通知を更新 """
+
+		if isSucceeded:
+			#notifs 内の表示中,未トリガ再通知以外を削除
+			for i, notif in enumerate(self.notifs):
+				if notif.flg_window_displaying:
+					continue
+				if (not notif.flg_triged) and notif.flg_re_notif:
+					continue
+				notif.timer.stop()
+				del self.notifs[i]
+
+			#新しい通知を追加
+			for notif in notifs_latest:
+				self.notifs.append(Notif(notif['summary'], notif['notif_time'], False))
+
+		QTimer.singleShot(1000*60*10, self.fetch_notif_updates)	#次回のスケジュール

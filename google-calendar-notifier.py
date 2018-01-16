@@ -22,14 +22,9 @@ def main():
 	setproctitle.setproctitle(APPLICATION_NAME)
 	app = QApplication(sys.argv)
 	w = QWidget()
+	#w = NotifWindow('summary')
 	w.show()
-
-	#マネージャを起動
-	manager = Manager()
-	manager.setDaemon(True)
-	manager.setName('Manager')
-	manager.start()
-
+	m = Manager()	#pylint: disable=W0612
 	sys.exit(app.exec_())
 
 if __name__ == '__main__':
