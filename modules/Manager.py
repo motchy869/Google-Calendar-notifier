@@ -150,11 +150,24 @@ class Manager(QObject):
 					continue
 				if (not notif.flg_triged) and notif.flg_re_notif:
 					continue
-				notif.timer.stop()
 				del self.notifs[i]
 
 			#新しい通知を追加
 			for notif in notifs_latest:
-				self.notifs.append(Notif(notif['summary'], notif['notif_time'], False))
+				new_notif = Notif(notif['summary'], notif['notif_time'], False)
+				new_notif.sig_reg_re_notif.connect(self.register_re_notif)
+				self.notifs.append(new_notif)
+
+			#テスト通知
+			new_notif = Notif('test notif', datetime.now(timezone('Asia/Tokyo')) + timedelta(seconds=3), False)
+			new_notif.sig_reg_re_notif.connect(self.register_re_notif)
+			self.notifs.append(new_notif)
 
 		QTimer.singleShot(1000*60*10, self.fetch_notif_updates)	#次回のスケジュール
+
+	@pyqtSlot(str, datetime)
+	def register_re_notif(self, summary: str, notif_time_jst: datetime):
+		""" 再通知の登録 """
+		re_notif = Notif(summary, notif_time_jst, True)
+		re_notif.sig_reg_re_notif.connect(self.register_re_notif)
+		self.notifs.append(re_notif)
