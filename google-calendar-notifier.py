@@ -22,7 +22,6 @@ def main():
 	setproctitle.setproctitle(APPLICATION_NAME)
 	app = QApplication(sys.argv)
 	w = QWidget()
-	#w = NotifWindow('summary')
 	w.show()
 	m = Manager()	#pylint: disable=W0612
 	sys.exit(app.exec_())

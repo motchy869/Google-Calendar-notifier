@@ -1,6 +1,9 @@
 """ 通知ウィンドウクラス """
 
-from time import sleep
+import threading
+import time
+
+from modules.Global import logger
 
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QPushButton, QSpinBox, QVBoxLayout, QWidget)
@@ -45,9 +48,17 @@ class NotifWindow(QWidget):
 		ウィンドウの表示
 		基底クラスの showEvent をオーバーライドしている。
 
-		マウスカーソルの右下(デスクトップからはみ出してしまう場合は左上等適宜変更)に出現し、デスクトップ右上に向かって移動する。
+		マウスカーソルが居るデスクトップの右下から出現して右上へスライドする。
 		"""
 		super(NotifWindow, self).showEvent(se)
+		th = threading.Thread(target=self.slide)
+		th.start()
+
+	def slide(self):
+		""" ウィンドウをスライドする """
+		self.setEnabled(False)	#移動中は入力を無効化
+		time.sleep(3)
+		self.setEnabled(True)
 
 	def button_done_clicked(self):
 		""" 完了ボタンがクリックされた """

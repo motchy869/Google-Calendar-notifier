@@ -159,7 +159,7 @@ class Manager(QObject):
 				self.notifs.append(new_notif)
 
 			#テスト通知
-			new_notif = Notif('test notif', datetime.now(timezone('Asia/Tokyo')) + timedelta(seconds=3), False)
+			new_notif = Notif('test notif', datetime.now(timezone('Asia/Tokyo')) + timedelta(seconds=1), False)
 			new_notif.sig_reg_re_notif.connect(self.register_re_notif)
 			self.notifs.append(new_notif)
 
