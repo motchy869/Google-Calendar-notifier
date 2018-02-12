@@ -22,6 +22,7 @@ from oauth2client.file import Storage
 
 from PyQt5.QtCore import (pyqtSignal, pyqtSlot, QObject, QThread, QTimer)
 
+INTERVAL_FETCH_NEW_NOTIFS = 5	#新しい通知の確認間隔[min]
 credentials = None
 service = None
 
@@ -115,8 +116,8 @@ class Thread_fetch_notif_updates(QThread):
 					rems = event['reminders']['overrides']
 				for rem in rems:
 					notif_time_jst = start_time_jst - timedelta(minutes=rem['minutes'])
-					if (notif_time_jst - now_jst)/timedelta(minutes=1) <= 0 or (notif_time_jst - now_jst)/timedelta(minutes=1) > 11:
-						continue	#通知時刻を過ぎたものや、11分超過後のものは除外(次の更新で取り入れられる。1分は安全マージン)。
+					if (notif_time_jst - now_jst)/timedelta(minutes=1) <= 0 or (notif_time_jst - now_jst)/timedelta(minutes=1) > INTERVAL_FETCH_NEW_NOTIFS+1:
+						continue	#通知時刻を過ぎたものや、6分超過後のものは除外(次の更新で取り入れられる。1分は安全マージン)。
 					notifs_latest.append({'summary': event['summary'], 'notif_time': notif_time_jst})
 		self.sig_fetch_done.emit(True, notifs_latest)
 
@@ -159,11 +160,11 @@ class Manager(QObject):
 				self.notifs.append(new_notif)
 
 			#テスト通知
-			new_notif = Notif('test notif', datetime.now(timezone('Asia/Tokyo')) + timedelta(seconds=1), False)
-			new_notif.sig_reg_re_notif.connect(self.register_re_notif)
-			self.notifs.append(new_notif)
+			#new_notif = Notif('This is a test notification', datetime.now(timezone('Asia/Tokyo')) + timedelta(seconds=1), False)
+			#new_notif.sig_reg_re_notif.connect(self.register_re_notif)
+			#self.notifs.append(new_notif)
 
-		QTimer.singleShot(1000*60*10, self.fetch_notif_updates)	#次回のスケジュール
+		QTimer.singleShot(1000*60*INTERVAL_FETCH_NEW_NOTIFS, self.fetch_notif_updates)	#次回のスケジュール
 
 	@pyqtSlot(str, datetime)
 	def register_re_notif(self, summary: str, notif_time_jst: datetime):

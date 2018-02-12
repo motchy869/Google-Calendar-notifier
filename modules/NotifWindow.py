@@ -1,12 +1,14 @@
 """ 通知ウィンドウクラス """
 
+import math
 import threading
 import time
 
 from modules.Global import logger
 
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QPushButton, QSpinBox, QVBoxLayout, QWidget)
+from PyQt5.QtCore import (pyqtSignal, QPoint, Qt)
+from PyQt5.QtGui import (QCursor, QGuiApplication)
+from PyQt5.QtWidgets import (QApplication, QHBoxLayout, QLabel, QPushButton, QSpinBox, QVBoxLayout, QWidget)
 
 class NotifWindow(QWidget):
 	""" 通知ウィンドウクラス """
@@ -17,6 +19,7 @@ class NotifWindow(QWidget):
 	def __init__(self, summary: str):
 		super(NotifWindow, self).__init__()
 		label = QLabel(summary)
+		label.setStyleSheet("font-size: 14pt; font-weight: bold")
 
 		button_re_notif = QPushButton('再通知')
 		button_re_notif.clicked.connect(self.button_re_notif_clicked)
@@ -40,6 +43,7 @@ class NotifWindow(QWidget):
 
 		self.setLayout(vLayout)
 		self.setWindowTitle('Google Calendar の通知')
+		self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)	#常に最前面表示
 
 		self.flg_can_close = False	#ウィンドウを閉じても良いか?
 
@@ -57,7 +61,16 @@ class NotifWindow(QWidget):
 	def slide(self):
 		""" ウィンドウをスライドする """
 		self.setEnabled(False)	#移動中は入力を無効化
-		time.sleep(3)
+		screens = QGuiApplication.screens()
+		screen = screens[QApplication.desktop().screenNumber(QCursor.pos())]	#マウスカーソルが居るデスクトップ
+		X = screen.geometry().bottomRight().x() - self.frameSize().width()	#通知ウィンドウの左端座標
+		Y = screen.geometry().bottomRight().y() - self.frameSize().height()	#通知ウィンドウ上端初期y座標
+		DURATION = 1.0	#エフェクト時間[sec]
+		DIV = 120	#エフェクト時間分割数
+		for t in range(-DIV>>1, DIV>>1):
+			self.move(X, Y/(1.0+math.exp(5.0*t/(0.5*DIV))))	#シグモイド関数で動かす
+			time.sleep(DURATION/DIV)
+			self.move(X, 0)	#仕上げ
 		self.setEnabled(True)
 
 	def button_done_clicked(self):

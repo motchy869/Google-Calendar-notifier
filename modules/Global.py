@@ -18,7 +18,7 @@ log_sh = logging.StreamHandler();\
 #	log_efh.setFormatter(fmt)
 logger.addHandler(log_sh)#; logger.addHandler(log_fh); logger.addHandler(log_efh)
 
-APPLICATION_NAME = 'Google-Calendar-notifier'
+APPLICATION_NAME = 'google-calendar-notifier'
 
 # def add_item_to_list(array: list, item):
 # 	"""

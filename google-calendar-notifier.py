@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Google-Calendar-notifier
+google-calendar-notifier
 
 Google Calendar から直近の予定を取得し、通知時刻になったらデスクトップに通知を表示する。
 """
@@ -21,8 +21,7 @@ def main():
 	"""
 	setproctitle.setproctitle(APPLICATION_NAME)
 	app = QApplication(sys.argv)
-	w = QWidget()
-	w.show()
+	app.setQuitOnLastWindowClosed(False)
 	m = Manager()	#pylint: disable=W0612
 	sys.exit(app.exec_())
 
