@@ -70,7 +70,7 @@ class NotifWindow(QWidget):
 		for t in range(-DIV>>1, DIV>>1):
 			self.move(X, Y/(1.0+math.exp(5.0*t/(0.5*DIV))))	#シグモイド関数で動かす
 			time.sleep(DURATION/DIV)
-			self.move(X, 0)	#仕上げ
+		self.move(X, 0)	#仕上げ
 		self.setEnabled(True)
 
 	def button_done_clicked(self):
